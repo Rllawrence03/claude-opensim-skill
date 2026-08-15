@@ -14,14 +14,22 @@ def resultant_peak(grf_path):
     groups = {}
     for j, lab in enumerate(labels):
         low = lab.lower()
-        if ("force" in low and low.rstrip("xyz").rstrip("_")) and low[-1] in "xyz" and "torque" not in low and "_p" not in low:
+        # Force-vector components follow OpenSim's ExternalForce identifier
+        # convention "..._v[xyz]" (e.g. "ground_force_vx"). Point/COP columns
+        # ("..._p[xyz]") and torque/moment columns also end in x/y/z but must
+        # not be swept into a force group.
+        if low.endswith(("_vx", "_vy", "_vz")):
             groups.setdefault(lab[:-1], []).append(j)
     peaks = []
     for pre, idx in groups.items():
         if len(idx) == 3:
             peaks.append(np.nanmax(np.linalg.norm(mat[:, idx], axis=1)))
     if not peaks:
-        fz = [j for j, l in enumerate(labels) if l.lower().endswith(("vy", "fz", "_z"))]
+        # Fallback for non-standard naming: a single vertical-force-looking
+        # column, still excluding point/torque columns.
+        fz = [j for j, l in enumerate(labels)
+              if l.lower().endswith(("vy", "fz"))
+              and "torque" not in l.lower() and "moment" not in l.lower()]
         peaks = [np.nanmax(mat[:, j]) for j in fz] or [np.nan]
     return float(np.nanmax(peaks))
 

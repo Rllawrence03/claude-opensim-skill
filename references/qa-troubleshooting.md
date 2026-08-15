@@ -47,13 +47,16 @@ as "within measurement error"):
 3. All markers, all trials → wrong/unscaled model, unit mismatch (mm/m), missing
    Z-up→Y-up rotation
 4. All markers, one trial → wrong subject's model, prefix mismatch, corrupted trial
-5. Only then consider weights — and start from the lab exemplar's weights
+5. Only then consider weights — ask the user for a known-working setup file's
+   weights if one exists, otherwise start from an official example
 
 ### High ID residuals
 
 1. Check external loads applied at all (identifier/column mismatch ⇒ silent zero
    force; compare column names in the .mot to the identifiers in the XML)
-2. Belt/foot assignment and crossover steps (data-sources.md §Bertec)
+2. Belt/plate assignment and crossover steps (data-sources.md §Force plate /
+   instrumented treadmill GRF); also check the moment convention (free moment
+   about COP vs. raw about-plate-origin — see the same section)
 3. COP artifacts at low vertical force (threshold + zero)
 4. Filter mismatch between kinematics and GRF
 5. Upstream IK quality (bad kinematics ⇒ bad accelerations ⇒ residuals)
@@ -79,32 +82,24 @@ Software / model / methods anchors:
   neuromuscular control... *PLoS Comput Biol* 14(7):e1006223. — cite for OpenSim 4.x.
 - **Rajagopal A, Dembia CL, DeMers MS, Delp DD, Hicks JL, Delp SL (2016).**
   Full-body musculoskeletal model for muscle-driven simulation of human gait.
-  *IEEE Trans Biomed Eng* 63(10):2068–79. — the lab's generic model; note 1-DOF
-  coupled knee and lumped lumbar joint as known limitations.
+  *IEEE Trans Biomed Eng* 63(10):2068–79. — a widely used generic full-body
+  model; note 1-DOF coupled knee and lumped lumbar joint as known limitations
+  if it's the model in use.
 - **Al Borno M et al. (2022).** OpenSense: An open-source toolbox for
   inertial-measurement-unit-based measurement of lower extremity kinematics over
   long durations. *J NeuroEng Rehabil* 19:22. — IMU-IK validation band.
 - **Werling K et al. (2023).** AddBiomechanics: Automating model scaling, inverse
   kinematics, and inverse dynamics from human motion data through sequential
   optimization. *PLoS ONE* 18(11):e0295152.
-
-Lab-lineage parameter sources (pulled from the user's Zotero library 2026-08-14):
-- **Maddox GT, Shelton AD, Mercer VS, Franz JR, Allen JL (2025).** Age-related
-  differences in the modulation of muscle coordination complexity for
-  goal-directed lateral stepping. *J Biomech* 184:112662. — source of the EMG
-  processing pipeline in `data-sources.md` §Cometa Wave Plus EMG (notch → wavelet
-  denoise → high-pass → rectify → low-pass envelope). Recorded on a Bertec
-  split-belt treadmill like this lab's; EMG hardware in the paper was Delsys
-  Trigno, not Cometa — verify the filter chain still applies before treating it as
-  the lab default.
 - **Mihy JA, Wagatsuma M, Cain SM, Hafer JF (2026).** A Functional
   Sensor-to-Segment Calibration Method Reduces the Effects of Varied Sensor
   Placement on Estimates of Segment Angular Excursion. *J Appl Biomech* 42:131–139.
   — source of the IMU placement/calibration guidance in `references/opensense.md`
-  §Sensor placement (APDM Opal). Joint Cain + Hafer paper, tested the same APDM
-  Opal hardware this lab uses.
-
-No standalone J.A. Hafer paper on IMU gait analysis in older adults is in the
-Zotero library yet — the Mihy et al. 2026 paper above is the only Hafer item
-found. If the lab has a specific Hafer older-adult validation paper in mind, add
-it to Zotero and re-pull.
+  §Sensor placement and functional calibration (APDM Opal hardware).
+- **Hafer JF, Mihy JA, Hunt A, Zernicke RF, Johnson RT (2023).** Lower Extremity
+  Inverse Kinematics Results Differ Between Inertial Measurement Unit- and
+  Marker-Derived Gait Data. *J Appl Biomech* 39(3):133–142. — MoCap-vs-IMU
+  kinematics comparison in young adults, older adults, and older adults with
+  knee osteoarthritis (sagittal hip/knee/ankle differed by stride phase, no
+  tool-by-group interaction). Complements the Al Borno 2022 IMU-IK plausibility
+  band with population-specific context for older-adult/OA cohorts.

@@ -6,4 +6,3 @@ scratch/
 *.mot
 *.sto
 *.osim
-!assets/lab-exemplars/*.osim

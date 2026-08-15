@@ -70,8 +70,10 @@ Base: `https://raw.githubusercontent.com/opensim-org/opensim-core/main/`
 
 ## Version pinning
 
-- Lab OpenSim version: **4.6**
-- Lab Python version: **3.12.13**
+Recorded for this checkout's development environment — update if yours differs:
+
+- OpenSim version: **4.6**
+- Python version: **3.12.13**
 - Install route: **conda**, environment name `biomechanics`
   (`opensim-cmd` lives at `<env>\Library\bin\opensim-cmd.exe` on Windows conda
   installs — not on PATH by default; activate the env or use the full path)

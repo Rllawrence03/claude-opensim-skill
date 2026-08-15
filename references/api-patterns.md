@@ -69,14 +69,14 @@ analog  = adapter.getAnalogDataTable(tables) # EMG + raw force channels live her
 ```
 
 **Footguns:**
-- Marker units: Nexus C3Ds are typically **mm**; TRC for OpenSim tools should carry
+- Marker units: C3Ds are commonly **mm**; TRC for OpenSim tools should carry
   the correct `Units` header (mm is fine if declared). Check
   `markers.getTableMetaDataString("Units")`.
-- Coordinate system: Vicon lab frame is usually Z-up; OpenSim models are **Y-up**.
-  Rotate before writing TRC (see rotation snippet below).
+- Coordinate system: capture-volume frame is often Z-up; OpenSim models are
+  **Y-up**. Rotate before writing TRC (see rotation snippet below).
 - Analog vs. point rates differ (e.g., 100 Hz markers, 1000–2000 Hz analog). Never
   assume shared time vectors.
-- Marker labels may carry the Nexus subject prefix (`Subj01:RASI`) — strip before
+- Marker labels may carry a subject/session prefix (`Subj01:RASI`) — strip before
   matching a markerset.
 
 ## Rotating a Vec3 table (Z-up → Y-up)
@@ -89,7 +89,7 @@ def rotate_table(table_vec3, axis_str, deg):
         row = table_vec3.getRowAtIndex(i)
         for j in range(table_vec3.getNumColumns()):
             row[j] = R.multiply(row[j])
-# Typical Vicon→OpenSim: rotate -90° about x
+# Typical Z-up capture volume → OpenSim: rotate -90° about x
 ```
 
 ## Writing files

@@ -1,16 +1,16 @@
 # Tools, setup XML, and workflows
 
 Get a schema-correct default with `opensim-cmd print-xml <ToolName>` and edit from
-there, or start from the lab exemplars in `assets/lab-exemplars/`. Tag documentation:
-`opensim-cmd info <ClassName>` (confirmed current subcommand on OpenSim 4.6 — see
-`references/documentation.md` §Version pinning).
+there, or ask the user for a known-working version of the file if they have one.
+Tag documentation: `opensim-cmd info <ClassName>` (confirmed current subcommand
+on OpenSim 4.6 — see `references/documentation.md` §Version pinning).
 
 ## Workflow spine
 
 ```
-C3D (Nexus) ──> TRC (markers, Y-up) ──────────┐
+C3D (mocap) ──> TRC (markers, Y-up) ───────────┐
             └─> GRF .mot + external_loads.xml ─┤
-Generic Rajagopal + PiG markerset ─> Scale ─> scaled.osim
+Generic model + markerset ─> Scale ─> scaled.osim
 scaled.osim + TRC ────────────────> IK  ─> trial_ik.mot (+ _ik_marker_errors.sto)
 scaled.osim + ik.mot + GRF ───────> ID  ─> inverse_dynamics.sto
 scaled.osim + ik.mot [+ GRF] ─────> AnalyzeTool (BodyKinematics, MuscleAnalysis, SO)
@@ -28,7 +28,8 @@ Three nested blocks; each can be enabled/disabled independently:
 
 Common failures:
 - `time_range` outside the static trial → cryptic "no rows in range" errors
-- Marker name mismatch between markerset.xml and TRC (case-sensitive; Nexus prefixes)
+- Marker name mismatch between markerset.xml and TRC (case-sensitive; watch for
+  subject/session prefixes from the capture software)
 - Mass mismatch: `<mass>` must be the subject's measured mass; scaling distributes it
 - Units: TRC in mm with `Units mm` header is fine; silent meter/mm confusion produces
   ~1000× scale factors — check `scale_factors` output when a scaled model looks wrong
@@ -42,7 +43,8 @@ Key tags: `model_file`, `marker_file`, `time_range`, `output_motion_file`,
 - Always keep `report_errors` on: `_ik_marker_errors.sto` is the primary QA artifact
   (see qa-troubleshooting.md).
 - Weights: order-of-magnitude reasoning only (anatomical landmarks high, wand/cluster
-  markers lower). The lab exemplar's weights are the validated defaults.
+  markers lower). Ask the user for a known-working IK setup if one exists — its
+  weights are the best starting point.
 - A single misbehaving marker (gap-filled artifact, swapped label) can wreck all
   coordinates — check per-marker errors before touching weights.
 
@@ -57,7 +59,7 @@ Key tags: `model_file`, `coordinates_file` (IK .mot), `external_loads_file`,
   happens upstream when writing the .mot.
 - `inDegrees` header of the coordinates file must be correct or all results are garbage.
 
-### ExternalLoads XML (Bertec split-belt: two forces)
+### ExternalLoads XML (split-belt treadmill / two force plates: two forces)
 
 ```xml
 <ExternalLoads name="treadmill">
@@ -122,8 +124,9 @@ opensim-cmd update-file old.osim new.osim   # migrate old-version files
 Automated scale+IK(+ID) as a cross-check on manual results (Werling et al. 2023).
 Browser-based (addbiomechanics.org) — no headless API; the skill's role:
 
-**Prep:** a folder with (1) generic Rajagopal `.osim` with the PiG markerset attached,
-(2) one TRC per trial (Y-up, correct units), (3) optional GRF `.mot` per trial with
+**Prep:** a folder with (1) a generic `.osim` (Rajagopal is the model
+AddBiomechanics is built around) with the matching markerset attached, (2) one
+TRC per trial (Y-up, correct units), (3) optional GRF `.mot` per trial with
 matching filenames for ID. Subject mass/height entered on upload.
 
 **Parse results:** download contains scaled `.osim`, per-trial IK `.mot`, marker
@@ -132,4 +135,4 @@ against the manual pipeline with the QA thresholds; AddBiomechanics optimizes ma
 distribution, so residuals are typically lower than hand-scaled results.
 
 When to suggest it: second opinion on a suspect scale/IK result; quick processing of
-throwaway pilot data. Not a replacement for the validated lab pipeline.
+throwaway pilot data. Not a replacement for a validated, purpose-built pipeline.

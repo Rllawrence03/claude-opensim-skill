@@ -1,8 +1,13 @@
 # opensim-dev — Claude Code skill
 
-OpenSim development and troubleshooting skill for a gait biomechanics lab
-(Rajagopal 2016 model, Plug-in Gait markers, Vicon Nexus, Bertec FIT 5 instrumented
-treadmill, APDM + Vicon Blue Trident IMUs, Cometa Wave Plus EMG, Novel loadsol).
+OpenSim development and troubleshooting skill for gait and movement
+biomechanics work. Defaults to a Rajagopal 2016 model, Plug-in Gait markers,
+Vicon Nexus mocap, a Bertec instrumented treadmill, Cometa EMG, APDM + Vicon
+Blue Trident IMUs, and Novel loadsol insoles — edit `SKILL.md` §Default
+hardware & model to change these for a different setup, or just tell Claude
+your actual equipment and it'll use that instead. The reference docs describe
+each data type's patterns generically, so they still apply even when your
+hardware doesn't match the defaults.
 
 **Scope:** development and troubleshooting only. The skill instructs Claude to treat
 study data as read-only and to work in scratch directories — it is not a pipeline
@@ -14,13 +19,14 @@ Copy or clone this folder into your skills directory:
 
 ```bash
 # personal skills
-git clone <this-repo> ~/.claude/skills/opensim-dev
-# or project-level: <project>/.claude/skills/opensim-dev
+git clone https://github.com/Rllawrence03/claude-opensim-dev.git ~/.claude/skills/opensim-dev
+
+# or project-level
+git clone https://github.com/Rllawrence03/claude-opensim-dev.git <project>/.claude/skills/opensim-dev
 ```
 
 Claude Code picks it up automatically; verify with `/skills` or by asking Claude an
-OpenSim question. Alternatively, install the packaged `opensim-dev.skill` file via
-the Claude UI.
+OpenSim question.
 
 ## Layout
 
@@ -31,40 +37,31 @@ opensim-dev/
 │   ├── documentation.md         # doc map: introspection > GitHub > Confluence/doxygen
 │   ├── api-patterns.md          # Python API, TimeSeriesTable, C3D/TRC/STO I/O
 │   ├── tools-xml.md             # Scale/IK/ID/Analyze setups, opensim-cmd, AddBiomechanics
-│   ├── opensense.md             # APDM + Blue Trident -> IMUPlacer -> IMU IK
-│   ├── data-sources.md          # Nexus, Plug-in Gait, Bertec, Cometa, loadsol
+│   ├── opensense.md             # native + custom IMU readers -> IMUPlacer -> IMU IK
+│   ├── data-sources.md          # C3D/mocap, marker sets, force plate/treadmill GRF, EMG, insoles
 │   └── qa-troubleshooting.md    # Hicks 2015 thresholds, decision trees, bibliography
 ├── scripts/                     # read-only diagnostics (run in the opensim conda env)
 │   ├── inspect_c3d.py
 │   ├── inspect_model.py
 │   ├── check_ik_errors.py
 │   ├── check_id_residuals.py
-│   └── sto_to_csv.py
-└── assets/lab-exemplars/        # optional: drop sanitized lab setup XMLs here (see README there);
-                                  # empty by default — skill falls back to OpenSim's own
-                                  # documentation (print-xml defaults, GitHub examples) as baseline
+│   ├── sto_to_csv.py
+│   └── check_updates.py         # stdlib-only; checks this repo against origin, no opensim env needed
 ```
 
 ## Requirements
 
-- Python env with the `opensim` package. Lab default: conda env `biomechanics`
-  (OpenSim 4.6, Python 3.12.13) — see `references/documentation.md` §Version pinning.
+- Python env with the `opensim` package — see `references/documentation.md`
+  §Version pinning for how to record your specific version/env once known.
 - `opensim-cmd` for the introspection commands. On Windows conda installs it lives at
   `<env>\Library\bin\opensim-cmd.exe` and is not on PATH unless the env is activated.
 
 ## Open TODOs
 
-- [x] Pin OpenSim + Python versions in `references/documentation.md`
-- [x] Known-good setup XML baseline — falls back to OpenSim's own documentation
-      (`print-xml` defaults, GitHub `OpenSim/Examples/`) until/unless the lab's own
-      sanitized files are dropped into `assets/lab-exemplars/` (optional, not blocking)
-- [x] Pull Allen / Cain / Hafer citations and extract parameters
-      (`references/qa-troubleshooting.md` §Bibliography) — no standalone Hafer
-      older-adult paper found in Zotero yet, see note in that section
-- [ ] Test scripts against a real C3D / APDM / Trident export; add
-      `trident_to_quat_table.py` once validated
+None currently open.
 
 ## Data policy
 
-No participant data in this repo. Exemplar files must be de-identified with lab
-paths removed.
+No participant data in this repo, ever. The skill never writes study data into
+the repo itself — known-working reference files come from asking the user for
+one in conversation, not from files committed here.
