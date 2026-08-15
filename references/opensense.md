@@ -65,6 +65,28 @@ version. A quaternion norm ≠ 1 or wildly discontinuous headings = wrong column
 `scripts/` should grow a validated `trident_to_quat_table.py` once tested against a
 real export.
 
+## Sensor placement (APDM Opal)
+
+Mihy, Wagatsuma, Cain, Hafer 2026 (see qa-troubleshooting.md bibliography) tested
+APDM Opal v2 IMUs — the same hardware this lab uses — on pelvis/thigh/shank/foot,
+comparing assumed vs. walking-based functional sensor-to-segment calibration across
+varied placements:
+
+- **Functional calibration matters most where soft tissue moves most.** Shank RMS
+  difference between placements: 15° with assumed calibration vs. **1.5° with
+  functional calibration**. Pelvis and thigh showed no significant difference
+  between assumed/functional — placement precision matters less there.
+- After functional calibration, between-sensor angular-excursion RMS differences
+  were **< 5°** for most comparisons — use as a rough plausibility band when
+  comparing repeat placements or sessions, similar in spirit to the marker-IK
+  thresholds in qa-troubleshooting.md.
+- **Avoid placing sensors over high soft-tissue-artifact areas** (their example:
+  anterior thigh) — soft tissue motion degrades functional calibration performance
+  independent of the calibration method.
+- This does not replace `references/qa-troubleshooting.md`'s IMU-IK plausibility
+  band (Al Borno et al. 2022, joint-angle level) — it's evidence for *why*
+  placement/calibration choices matter upstream of that.
+
 ## Calibration: IMUPlacer
 
 ```python

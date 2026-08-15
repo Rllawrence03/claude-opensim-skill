@@ -49,9 +49,20 @@
   column index.
 - Extraction target: filtered envelopes to CSV/MAT for the downstream (MATLAB/NMF)
   pipeline — this skill stops at clean EMG export.
-- Default processing (verify against lab conventions / Allen papers — see
-  qa-troubleshooting.md bibliography): band-pass (e.g., 20–450 Hz), rectify,
-  low-pass envelope; sampling ≥1 kHz.
+- **Reference processing pipeline** (Maddox, Shelton, Mercer, Franz, Allen 2025 —
+  same PI as this lab, motor-module/EMG methods; see qa-troubleshooting.md
+  bibliography). Their study used **Delsys Trigno wireless EMG at 1000 Hz**, not
+  Cometa — confirm with the user/lab protocol whether the same filter chain is used
+  on Cometa data before applying it as a default, but it is a concrete, lab-lineage
+  starting point rather than a generic assumption:
+  1. Notch filter at 100 Hz harmonics (mains hum removal)
+  2. Wavelet denoising (`wdenoise`, 3rd-order coiflets, hard Bayesian thresholding)
+     to raise SNR before touching the signal with a hard cutoff filter
+  3. High-pass at 35 Hz (3rd-order Butterworth) to remove motion artifact
+  4. Demean (remove residual DC offset)
+  5. Full-wave rectify
+  6. Low-pass at 10 Hz (3rd-order Butterworth) → linear envelope
+  7. Visual inspection to drop artifact segments before downstream analysis
 - Footguns: mains noise (50/60 Hz harmonics — inspect PSD before filtering
   decisions); clipped/saturated channels; wireless dropouts (flat-line segments,
   exact-zero runs).

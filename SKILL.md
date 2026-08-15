@@ -34,10 +34,13 @@ explaining tool behavior.
 ## Session start checklist
 
 1. Confirm the environment: `python -c "import opensim; print(opensim.__version__)"`.
-   All guidance in references/ is written against the OpenSim 4.5/4.6 schema; if the
-   installed version differs, verify tag names with introspection (below) before
-   trusting any template.
-2. If a command-line workflow is involved, confirm `opensim-cmd --help` runs.
+   Lab default is the conda env `biomechanics` (OpenSim 4.6, Python 3.12.13) — see
+   `references/documentation.md` §Version pinning. All guidance in references/ is
+   written against the OpenSim 4.6 schema; if the installed version differs, verify
+   tag names with introspection (below) before trusting any template.
+2. If a command-line workflow is involved, confirm `opensim-cmd --help` runs. On
+   Windows conda installs, `opensim-cmd.exe` lives in `<env>\Library\bin` and is not
+   on PATH by default unless the env is activated — use the full path if needed.
 
 ## Consulting documentation (mandatory ordering)
 
@@ -47,7 +50,9 @@ version-sensitive and commonly misremembered. Resolution order:
 1. **Local introspection** (always version-correct):
    - `python -c "import opensim; help(opensim.ClassName)"` for API signatures
    - `opensim-cmd print-xml <ToolName>` / `-PrintSetup` for default setup files
-   - `opensim-cmd -PropertyInfo ClassName.propertyName` for XML tag documentation
+   - `opensim-cmd info ClassName` for a class's property list (confirmed current
+     subcommand on OpenSim 4.6 via `opensim-cmd --help`; the older `-PropertyInfo`
+     flag form does not exist in 4.6)
 2. **GitHub** (machine-readable, reliable fetch): raw files from
    `github.com/opensim-org/opensim-core` — `CHANGELOG.md`, `Bindings/Python/examples/`,
    `OpenSim/Examples/`.
@@ -91,10 +96,22 @@ All read-only; safe on any file. Run with the user's opensim env active.
 
 ## Known-good exemplars
 
-`assets/lab-exemplars/` holds the lab's validated setup XMLs and marker set. When
-troubleshooting a failing setup file, **diff against the exemplar first** — most
-setup failures are a missing/renamed tag, wrong relative path, or a time-range
-mismatch, and the diff finds them faster than reasoning from scratch.
+`assets/lab-exemplars/` is for the lab's own validated setup XMLs and marker set,
+once provided (see `assets/lab-exemplars/README.md`) — it is currently empty.
+
+When troubleshooting a failing setup file, **diff against a known-good baseline
+first** — most setup failures are a missing/renamed tag, wrong relative path, or a
+time-range mismatch, and a diff finds them faster than reasoning from scratch.
+Resolution order for the baseline:
+
+1. `assets/lab-exemplars/` if populated (matches this lab's exact conventions).
+2. `opensim-cmd print-xml <ToolName>` — schema-correct default for the *installed*
+   version, always available, zero setup. Best default baseline for structural
+   issues (missing/renamed/misordered tags).
+3. Official example setup files on GitHub — `OpenSim/Examples/` (e.g. Gait2354) and
+   `Bindings/Python/examples/` in `opensim-org/opensim-core` (see
+   `references/documentation.md`). Useful for seeing a *populated* working example,
+   not just an empty schema template.
 
 ## AddBiomechanics pathway
 

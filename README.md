@@ -40,21 +40,27 @@ opensim-dev/
 │   ├── check_ik_errors.py
 │   ├── check_id_residuals.py
 │   └── sto_to_csv.py
-└── assets/lab-exemplars/        # drop sanitized known-good setup XMLs here (see README there)
+└── assets/lab-exemplars/        # optional: drop sanitized lab setup XMLs here (see README there);
+                                  # empty by default — skill falls back to OpenSim's own
+                                  # documentation (print-xml defaults, GitHub examples) as baseline
 ```
 
 ## Requirements
 
-- Python env with the `opensim` package (4.5/4.6 assumed; pin your version in
-  `references/documentation.md`)
-- `opensim-cmd` on PATH for the introspection commands
+- Python env with the `opensim` package. Lab default: conda env `biomechanics`
+  (OpenSim 4.6, Python 3.12.13) — see `references/documentation.md` §Version pinning.
+- `opensim-cmd` for the introspection commands. On Windows conda installs it lives at
+  `<env>\Library\bin\opensim-cmd.exe` and is not on PATH unless the env is activated.
 
 ## Open TODOs
 
-- [ ] Pin OpenSim + Python versions in `references/documentation.md`
-- [ ] Add sanitized lab setup XMLs + markerset to `assets/lab-exemplars/`
-- [ ] Pull Allen / Cain / Hafer citations and extract parameters
-      (`references/qa-troubleshooting.md` §Bibliography)
+- [x] Pin OpenSim + Python versions in `references/documentation.md`
+- [x] Known-good setup XML baseline — falls back to OpenSim's own documentation
+      (`print-xml` defaults, GitHub `OpenSim/Examples/`) until/unless the lab's own
+      sanitized files are dropped into `assets/lab-exemplars/` (optional, not blocking)
+- [x] Pull Allen / Cain / Hafer citations and extract parameters
+      (`references/qa-troubleshooting.md` §Bibliography) — no standalone Hafer
+      older-adult paper found in Zotero yet, see note in that section
 - [ ] Test scripts against a real C3D / APDM / Trident export; add
       `trident_to_quat_table.py` once validated
 

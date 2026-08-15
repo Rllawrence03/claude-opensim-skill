@@ -23,9 +23,10 @@ opensim-cmd print-xml InverseKinematicsTool   # 4.x subcommand form
 # legacy flag form if the above is unavailable in the installed version:
 # ik -PrintSetup
 
-# Documentation for a specific XML tag
-opensim-cmd -PropertyInfo InverseKinematicsTool.marker_file
-opensim-cmd -PropertyInfo   # lists all registered classes
+# List/describe properties for a class (verified command name on OpenSim 4.6;
+# the older `-PropertyInfo` flag form does not exist in 4.6 — `info` is the
+# current subcommand, confirmed via `opensim-cmd --help`)
+opensim-cmd info InverseKinematicsTool
 ```
 
 ## Web sources
@@ -57,9 +58,9 @@ Base: `https://raw.githubusercontent.com/opensim-org/opensim-core/main/`
 
 | Task | Introspection | Web |
 |---|---|---|
-| IK setup file tags | `print-xml InverseKinematicsTool`, `-PropertyInfo` | Confluence "Inverse Kinematics"; doxygen `InverseKinematicsTool` |
+| IK setup file tags | `print-xml InverseKinematicsTool`, `info InverseKinematicsTool` | Confluence "Inverse Kinematics"; doxygen `InverseKinematicsTool` |
 | Scale setup / measurement set | `print-xml ScaleTool` | Confluence "Scaling"; doxygen `ScaleTool`, `MarkerPlacer`, `ModelScaler` |
-| ID + external loads | `print-xml InverseDynamicsTool`; `-PropertyInfo ExternalLoads.*` | Confluence "Inverse Dynamics" + "External Loads"; doxygen `ExternalLoads`, `ExternalForce` |
+| ID + external loads | `print-xml InverseDynamicsTool`; `info ExternalLoads` | Confluence "Inverse Dynamics" + "External Loads"; doxygen `ExternalLoads`, `ExternalForce` |
 | AnalyzeTool / BodyKinematics / MuscleAnalysis | `print-xml AnalyzeTool` | doxygen `AnalyzeTool` + analysis classes |
 | Static Optimization | `print-xml AnalyzeTool` (SO is an analysis) | Confluence "Static Optimization" |
 | C3D / TRC / STO adapters | `help(opensim.C3DFileAdapter)` etc. | doxygen `C3DFileAdapter`, `TRCFileAdapter`, `STOFileAdapter`, `TimeSeriesTable` |
@@ -69,10 +70,12 @@ Base: `https://raw.githubusercontent.com/opensim-org/opensim-core/main/`
 
 ## Version pinning
 
-Record in this file once known:
+- Lab OpenSim version: **4.6**
+- Lab Python version: **3.12.13**
+- Install route: **conda**, environment name `biomechanics`
+  (`opensim-cmd` lives at `<env>\Library\bin\opensim-cmd.exe` on Windows conda
+  installs — not on PATH by default; activate the env or use the full path)
 
-- Lab OpenSim version: **TODO — fill from `opensim.__version__`**
-- Lab Python version: **TODO**
-- Install route (conda vs. pip wheel): **TODO**
-
-Until filled, treat 4.5/4.6 as the assumed schema and verify tags via introspection.
+All guidance in `references/` is written against the OpenSim 4.6 schema. If a
+session's `opensim.__version__` differs, re-verify tags via introspection before
+trusting any template in this skill.

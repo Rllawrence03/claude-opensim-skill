@@ -88,12 +88,23 @@ Software / model / methods anchors:
   kinematics, and inverse dynamics from human motion data through sequential
   optimization. *PLoS ONE* 18(11):e0295152.
 
-Lab-lineage parameter sources — **TODO, fill at next build session via PubMed**
-(do not guess citations; pull real ones and extract the parameters into
-data-sources.md):
-- J.L. Allen (PI): EMG processing conventions (filter cutoffs, normalization,
-  channel sets) from her motor-module papers → becomes the EMG defaults.
-- S.M. Cain: IMU methods (placement, filtering, estimation approaches) → IMU
-  defaults.
-- J.A. Hafer: IMU gait analysis in older adults (sensor placement, gait events,
-  validation) → OUTDOORS-relevant defaults.
+Lab-lineage parameter sources (pulled from the user's Zotero library 2026-08-14):
+- **Maddox GT, Shelton AD, Mercer VS, Franz JR, Allen JL (2025).** Age-related
+  differences in the modulation of muscle coordination complexity for
+  goal-directed lateral stepping. *J Biomech* 184:112662. — source of the EMG
+  processing pipeline in `data-sources.md` §Cometa Wave Plus EMG (notch → wavelet
+  denoise → high-pass → rectify → low-pass envelope). Recorded on a Bertec
+  split-belt treadmill like this lab's; EMG hardware in the paper was Delsys
+  Trigno, not Cometa — verify the filter chain still applies before treating it as
+  the lab default.
+- **Mihy JA, Wagatsuma M, Cain SM, Hafer JF (2026).** A Functional
+  Sensor-to-Segment Calibration Method Reduces the Effects of Varied Sensor
+  Placement on Estimates of Segment Angular Excursion. *J Appl Biomech* 42:131–139.
+  — source of the IMU placement/calibration guidance in `references/opensense.md`
+  §Sensor placement (APDM Opal). Joint Cain + Hafer paper, tested the same APDM
+  Opal hardware this lab uses.
+
+No standalone J.A. Hafer paper on IMU gait analysis in older adults is in the
+Zotero library yet — the Mihy et al. 2026 paper above is the only Hafer item
+found. If the lab has a specific Hafer older-adult validation paper in mind, add
+it to Zotero and re-pull.

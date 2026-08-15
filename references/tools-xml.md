@@ -2,7 +2,8 @@
 
 Get a schema-correct default with `opensim-cmd print-xml <ToolName>` and edit from
 there, or start from the lab exemplars in `assets/lab-exemplars/`. Tag documentation:
-`opensim-cmd -PropertyInfo <Class>.<property>`.
+`opensim-cmd info <ClassName>` (confirmed current subcommand on OpenSim 4.6 — see
+`references/documentation.md` §Version pinning).
 
 ## Workflow spine
 
@@ -112,7 +113,7 @@ Keep generated setups next to outputs — they are the provenance record.
 ```bash
 opensim-cmd run-tool setup_ik.xml       # run any tool from a setup file
 opensim-cmd print-xml ScaleTool         # schema-correct default setup
-opensim-cmd -PropertyInfo               # list classes; add Class.prop for docs
+opensim-cmd info ScaleTool              # list a class's properties
 opensim-cmd update-file old.osim new.osim   # migrate old-version files
 ```
 
