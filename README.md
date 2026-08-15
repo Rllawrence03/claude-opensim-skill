@@ -1,4 +1,4 @@
-# opensim-dev — Claude Code skill
+# opensim-skill — Claude Code skill
 
 OpenSim development and troubleshooting skill for gait and movement
 biomechanics work. Defaults to a Rajagopal 2016 model, Plug-in Gait markers,
@@ -19,10 +19,10 @@ Copy or clone this folder into your skills directory:
 
 ```bash
 # personal skills
-git clone https://github.com/Rllawrence03/claude-opensim-dev.git ~/.claude/skills/opensim-dev
+git clone https://github.com/Rllawrence03/claude-opensim-skill.git ~/.claude/skills/opensim-dev
 
 # or project-level
-git clone https://github.com/Rllawrence03/claude-opensim-dev.git <project>/.claude/skills/opensim-dev
+git clone https://github.com/Rllawrence03/claude-opensim-skill.git <project>/.claude/skills/opensim-dev
 ```
 
 Claude Code picks it up automatically; verify with `/skills` or by asking Claude an
